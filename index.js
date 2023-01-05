@@ -22,11 +22,35 @@ async function run() {
 	try {
 		const postCollection = client.db("CodingChallenge").collection("posts");
 
+        app.get("/post", async (req, res) => {
+            const query = {};
+            const result = await postCollection.find(query).toArray();
+            res.send(result);
+        })
+
 		app.post("/post", async (req, res) => {
 			const product = req.body;
 			const result = await postCollection.insertOne(product);
 			res.send(result);
-		});
+        });
+        app.put('/post/:id', async (req, res) => {
+            const id = req.params.id;
+            const filter = { _id: ObjectId(id) };
+            const query = req.body.name
+									const options = { upsert: true };
+									const updateDoc = {
+										$set: {
+											name: query,
+										},
+									};
+									const result = await postCollection.updateOne(
+										filter,
+										updateDoc,
+										options
+									);
+            res.send(result);
+            console.log(id)
+        })
 	} finally {
 	}
 }
