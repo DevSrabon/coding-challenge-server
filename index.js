@@ -20,7 +20,8 @@ const client = new MongoClient(uri, {
 
 async function run() {
 	try {
-		const postCollection = client.db("CodingChallenge").collection("posts");
+        const postCollection = client.db("CodingChallenge").collection("posts");
+        const testCollection = client.db("CodingChallenge").collection("test")
 
         app.get("/post", async (req, res) => {
             const query = {};
@@ -50,6 +51,11 @@ async function run() {
 									);
             res.send(result);
             console.log(id)
+        })
+        app.get('/test', async (req, res) => {
+            const query = {};
+            const result = await testCollection.find(query).toArray();
+            res.send(result)
         })
 	} finally {
 	}
